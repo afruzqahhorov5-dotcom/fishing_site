@@ -1,0 +1,19 @@
+{
+  "total_photos": 0,
+  "total_videos": 0,
+  "total_sessions": 1,
+  "completed_sessions": 0,
+  "unique_visitors": [
+    "127.0.0.1"
+  ],
+  "last_activity": null,
+  "daily_stats": {},
+  "country_stats": {
+    "USA": 0,
+    "UK": 0,
+    "France": 0,
+    "Japan": 0,
+    "Brazil": 0,
+    "India": 0
+  }
+}

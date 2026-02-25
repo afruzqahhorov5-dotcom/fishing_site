@@ -1,0 +1,23 @@
+2026-02-25 23:33:18,612 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.137.56.177:5000
+2026-02-25 23:33:18,612 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2026-02-25 23:33:20,735 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8647111510:AAGSttsSVpDuS0RjxNP0eaWnYdyqOXSYOTQ/getMe "HTTP/1.1 200 OK"
+2026-02-25 23:33:21,043 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8647111510:AAGSttsSVpDuS0RjxNP0eaWnYdyqOXSYOTQ/deleteWebhook "HTTP/1.1 200 OK"
+2026-02-25 23:33:21,050 - telegram.ext.Application - INFO - Application started
+2026-02-25 23:33:31,692 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8647111510:AAGSttsSVpDuS0RjxNP0eaWnYdyqOXSYOTQ/getUpdates "HTTP/1.1 200 OK"
+2026-02-25 23:33:41,931 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8647111510:AAGSttsSVpDuS0RjxNP0eaWnYdyqOXSYOTQ/getUpdates "HTTP/1.1 200 OK"
+2026-02-25 23:33:46,736 - werkzeug - INFO - 127.0.0.1 - - [25/Feb/2026 23:33:46] "GET / HTTP/1.1" 200 -
+2026-02-25 23:33:47,324 - werkzeug - INFO - 127.0.0.1 - - [25/Feb/2026 23:33:47] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-02-25 23:33:52,174 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8647111510:AAGSttsSVpDuS0RjxNP0eaWnYdyqOXSYOTQ/getUpdates "HTTP/1.1 200 OK"
+2026-02-25 23:34:02,414 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8647111510:AAGSttsSVpDuS0RjxNP0eaWnYdyqOXSYOTQ/getUpdates "HTTP/1.1 200 OK"
+2026-02-25 23:34:12,652 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8647111510:AAGSttsSVpDuS0RjxNP0eaWnYdyqOXSYOTQ/getUpdates "HTTP/1.1 200 OK"
+2026-02-25 23:34:12,902 - werkzeug - INFO - 127.0.0.1 - - [25/Feb/2026 23:34:12] "GET / HTTP/1.1" 200 -
+2026-02-25 23:34:22,329 - werkzeug - INFO - 127.0.0.1 - - [25/Feb/2026 23:34:22] "GET / HTTP/1.1" 200 -
+2026-02-25 23:34:22,900 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8647111510:AAGSttsSVpDuS0RjxNP0eaWnYdyqOXSYOTQ/getUpdates "HTTP/1.1 200 OK"
+2026-02-25 23:34:33,074 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8647111510:AAGSttsSVpDuS0RjxNP0eaWnYdyqOXSYOTQ/getUpdates "HTTP/1.1 200 OK"
+2026-02-25 23:34:43,376 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8647111510:AAGSttsSVpDuS0RjxNP0eaWnYdyqOXSYOTQ/getUpdates "HTTP/1.1 200 OK"
+2026-02-25 23:34:53,615 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8647111510:AAGSttsSVpDuS0RjxNP0eaWnYdyqOXSYOTQ/getUpdates "HTTP/1.1 200 OK"
+2026-02-25 23:34:57,450 - werkzeug - INFO - 127.0.0.1 - - [25/Feb/2026 23:34:57] "GET / HTTP/1.1" 200 -
+2026-02-25 23:35:03,857 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8647111510:AAGSttsSVpDuS0RjxNP0eaWnYdyqOXSYOTQ/getUpdates "HTTP/1.1 200 OK"
