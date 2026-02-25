@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
 import requests
 import os
+import asyncio
 from datetime import datetime
 import logging
 import asyncio
@@ -22,6 +23,11 @@ CHAT_ID = os.environ.get("CHAT_ID", "6450239826")
 # ==================== TELEGRAM APP ====================
 telegram_app = Application.builder().token(BOT_TOKEN).build()
 
+# Global event loop yaratamiz
+loop = asyncio.new_event_loop()
+asyncio.set_event_loop(loop)
+loop.run_until_complete(telegram_app.initialize())
+
 # ==================== PAPKA ====================
 PHOTOS_DIR = "photos"
 os.makedirs(PHOTOS_DIR, exist_ok=True)
@@ -40,7 +46,12 @@ telegram_app.add_handler(CommandHandler("start", bot_start))
 def telegram_webhook():
     try:
         data = request.get_json(force=True)
-
+        update = Update.de_json(data, telegram_app.bot)
+        loop.run_until_complete(telegram_app.process_update(update))
+        return "ok"
+    except Exception as e:
+        logger.error(f"Webhook error: {e}")
+        return "error", 500
         async def process():
             await telegram_app.initialize()
             update = Update.de_json(data, telegram_app.bot)
