@@ -47,9 +47,7 @@ def receive_photo():
         return jsonify({'error': str(e)}), 500
 
 # ==================== RUN ====================
-
-if __name__ == '__main__':
-   # ==================== RUN ====================
+# ==================== RUN ====================
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
